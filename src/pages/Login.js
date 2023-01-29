@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,15 +12,18 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Logo from '../logo-white.png';
 
+import Logo from '../logo-white.png';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { gapi } from 'gapi-script';
+import { GoogleLogin } from '@react-oauth/google';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
             <Link color="inherit" >
                 ADC Scanner
-      </Link>{' '}
+            </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -30,11 +33,11 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide(props) {
-    
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        
+       
         let userObj = {
             email: data.get('email'),
             password: data.get('password'),
@@ -42,7 +45,25 @@ export default function SignInSide(props) {
         console.log(userObj);
         props.handleSubmit(event);
     };
-
+    const clientId = "124676753655-jik95f48lluksjht0i4fl9rc98jntp85.apps.googleusercontent.com";
+    const responseGoogle = (response) => {
+        console.log(response);
+    }
+    const onSuccess = (res) => {
+        console.log('success:', res);
+    };
+    const onFailure = (err) => {
+        console.log('failed:', err);
+    };
+    useEffect(() => {
+        const initClient = () => {
+            gapi.client.init({
+                clientId: clientId,
+                scope: ''
+            });
+        };
+        gapi.load('client:auth2', initClient);
+    });
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
@@ -76,9 +97,9 @@ export default function SignInSide(props) {
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign in
-            </Typography>
+                        </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                            <TextField
+                            {/* <TextField
                                 margin="normal"
                                 required
                                 fullWidth
@@ -105,8 +126,21 @@ export default function SignInSide(props) {
                                 sx={{ mt: 3, mb: 2 }}
                             >
                                 Sign In
-              </Button>
+                            </Button> */}
 
+                            <GoogleOAuthProvider  
+                                clientId={clientId}
+                                scope = ""
+                                >
+                                <GoogleLogin
+                                    clientId={clientId}
+                                    scope = ""
+                                    buttonText="Sign in with Google"
+                                    onSuccess={onSuccess}
+                                    onFailure={onFailure}
+                                    isSignedIn={true}
+                                />
+                            </GoogleOAuthProvider>
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
                     </Box>
