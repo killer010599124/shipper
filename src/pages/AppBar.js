@@ -112,6 +112,23 @@ function ResponsiveAppBar(props) {
                 >Scans
                </Typography>
                <Typography 
+                style={{ display: "flex", justifyContent: 'center', alignItems: 'center', cursor :'pointer'  }}
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'flex', md: 'none' },
+                  flexGrow: 1,
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.1rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  minWidth: 100 }}
+                component="a"
+                onClick={() => navigatepage('/shippers')}
+                >Shippers
+               </Typography>
+               <Typography 
                 style={{ display: "flex", justifyContent: 'center', alignItems: 'center', cursor :'pointer' }}
                 variant="h6"
                 sx={{

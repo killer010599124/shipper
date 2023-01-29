@@ -16,6 +16,7 @@ import Login from './pages/Login';
 import AdminPage from './pages/AdminPage';
 import ReportPage from './pages/ReportPage';
 import PalletPage from "./pages/PalletPage";
+import ShipperPage from "./pages/ShipperPage";
 
 
 export default function App() {
@@ -33,6 +34,12 @@ export default function App() {
             <AuthStatus />
             <div className="App">
               <PalletPage />
+            </div>
+          </RequireAuth>} />
+          <Route path="/shippers" element={<RequireAuth>
+            <AuthStatus />
+            <div className="App">
+              <ShipperPage />
             </div>
           </RequireAuth>} />
           <Route path="/admin" element={<RequireAuth>
