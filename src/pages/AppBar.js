@@ -15,7 +15,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import logo from './logo-white.png';
+import logo from '../logo-white.png';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];

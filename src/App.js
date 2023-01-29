@@ -10,12 +10,12 @@ import {
 } from "react-router-dom";
 import { fakeAuthProvider } from "./auth";
 import './App.css';
-import ScanerPage from './ScanerPage';
-import AppBar from './AppBar';
-import Login from './Login';
-import AdminPage from './AdminPage';
-import ReportPage from './ReportPage';
-import PalletPage from "./PalletPage";
+import ScanerPage from './pages/ScanerPage';
+import AppBar from './pages/AppBar';
+import Login from './pages/Login';
+import AdminPage from './pages/AdminPage';
+import ReportPage from './pages/ReportPage';
+import PalletPage from "./pages/PalletPage";
 
 
 export default function App() {
