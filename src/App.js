@@ -17,52 +17,73 @@ import AdminPage from './pages/AdminPage';
 import ReportPage from './pages/ReportPage';
 import PalletPage from "./pages/PalletPage";
 import ShipperPage from "./pages/ShipperPage";
-
+import ProtectedRoute from "./components/ProtectedRoute"
 
 export default function App() {
   return (
     <AuthProvider>
       <Routes>
         <Route >
-          <Route path="/" element={<RequireAuth>
-            <AuthStatus />
+          <Route path="/" element={
+
             <div className="App">
-              <ScanerPage />
+
+              <LoginPage />
             </div>
-          </RequireAuth>} />
-          <Route path="/pallet" element={<RequireAuth>
-            <AuthStatus />
-            <div className="App">
-              <PalletPage />
-            </div>
-          </RequireAuth>} />
-          <Route path="/shippers" element={<RequireAuth>
-            <AuthStatus />
-            <div className="App">
-              <ShipperPage />
-            </div>
-          </RequireAuth>} />
-          <Route path="/admin" element={<RequireAuth>
-            <AuthStatus />
-            <div className="App">
-              <AdminPage />
-            </div>
-          </RequireAuth>} />
-          <Route path="/reporting" element={<RequireAuth>
-            <AuthStatus />
-            <div className="App">
-              <ReportPage />
-            </div>
-          </RequireAuth>} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route
+          } />
+          <Route path="/pallet" element={
+            <ProtectedRoute>
+              <div className="App">
+                <AppBar />
+                <PalletPage />
+              </div>
+            </ProtectedRoute>
+          } />
+          <Route path="/shippers" element={
+            <ProtectedRoute>
+              <div className="App">
+                <AppBar />
+                <ShipperPage />
+              </div>
+            </ProtectedRoute>
+
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <div className="App">
+                <AppBar />
+                <AdminPage />
+              </div>
+            </ProtectedRoute>
+
+          } />
+          <Route path="/reporting" element={
+            <ProtectedPage>
+              <div className="App">
+                <AppBar />
+                <ReportPage />
+              </div>
+            </ProtectedPage>
+
+          } />
+          <Route path="/scanner" element={
+            <ProtectedRoute>
+              <div className="App">
+                <AppBar />
+                <ScanerPage />
+
+              </div>
+            </ProtectedRoute>
+
+          } />
+          {/* <Route
             path="/protected"
             element={
               <RequireAuth>
                 <ScanerPage />
               </RequireAuth>
             }
-          />
+          /> */}
         </Route>
       </Routes>
     </AuthProvider>
@@ -128,8 +149,8 @@ function AuthStatus() {
 
   return (
     <div>
-      <AppBar userName={auth.user} handleSignout={() => {auth.signout(() => navigate("/"));}} />
-      
+      <AppBar userName={auth.user} handleSignout={() => { auth.signout(() => navigate("/")); }} />
+
     </div>
   );
 }
@@ -143,10 +164,21 @@ function RequireAuth({ children }) {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return children;
+
+  // const items = JSON.parse(localStorage.getItem('items'));
+  // console.log(items)
+  // let location = useLocation();
+  // if (!items) {
+
+  //   return <Navigate to="/" state={{ from: location }} replace />;
+
+  // }
+  // return children;
+
 }
 
 function LoginPage() {
@@ -154,17 +186,17 @@ function LoginPage() {
   let location = useLocation();
   let auth = useAuth();
 
-  let from = location.state ?.from ?.pathname || "/";
+  let from = location.state?.from?.pathname || "/";
 
   function handleSubmit(event) {
     event.preventDefault();
 
     let formData = new FormData(event.currentTarget);
     let username = formData.get("username");
-    if(username.toLowerCase() === 'admin'){
+    if (username.toLowerCase() === 'admin') {
       from = '/admin';
     }
-    if(username.toLowerCase() === 'reporting'){
+    if (username.toLowerCase() === 'reporting') {
       from = '/reporting';
     }
     auth.signin(username, () => {
@@ -180,6 +212,7 @@ function LoginPage() {
 
   return (
     <Login handleSubmit={handleSubmit} />
+    //<Login/>
   );
 }
 

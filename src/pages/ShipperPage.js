@@ -58,8 +58,8 @@ const ShipperPage = () => {
             body : JSON.stringify({ user: "user", scan_station: '99', code: code })
         };
         //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)
-            //fetch('http://3.18.104.218:8125/add_envelope', requestOptions)
-        fetch('https://adc.eyeota.ai/api/agg_shipper', requestOptions)
+            fetch('http://localhost:8125/api/agg_shipper', requestOptions)
+        //fetch('https://adc.eyeota.ai/api/agg_shipper', requestOptions)
             .then(checkStatus)
             .then(response => response.json())
             .then(data => {
@@ -92,7 +92,6 @@ const ShipperPage = () => {
     };
     return (
         <>
-
             <Box
                 sx={{
                     '& > :not(style)': { m: 1, width: '100ch' },

@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useNavigate } from "react-router-dom";
 import Logo from '../logo-white.png';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { gapi } from 'gapi-script';
@@ -34,6 +34,7 @@ const theme = createTheme();
 
 export default function SignInSide(props) {
 
+    const [data, setData] = useState([]);
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -45,16 +46,46 @@ export default function SignInSide(props) {
         console.log(userObj);
         props.handleSubmit(event);
     };
+    const checkStatus = (response) => {
+        if (response.status >= 200 && response.status < 300) {
+            return Promise.resolve(response)
+        } else {
+            return Promise.reject(new Error(response.statusText))
+        }
+    }
     const clientId = "124676753655-jik95f48lluksjht0i4fl9rc98jntp85.apps.googleusercontent.com";
+    const navigate = useNavigate();
+    const navigatepage = (page) =>{
+        navigate(page);
+    }
     const responseGoogle = (response) => {
         console.log(response);
     }
     const onSuccess = (res) => {
-        console.log('success:', res);
+        // console.log('success:', res);
+        const jwtToken = res.credential;
+        fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${jwtToken}`).then(checkStatus)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+
+                // localStorage.setItem('dataKey', JSON.stringify(data));
+                localStorage.setItem('items', JSON.stringify(data));
+                navigate("/scanner")
+            })
+            .catch(error => {
+                console.log('There was an error!', error, error.toString());
+               
+            });
+       
+       
+        
     };
     const onFailure = (err) => {
         console.log('failed:', err);
     };
+    
     useEffect(() => {
         const initClient = () => {
             gapi.client.init({
@@ -83,7 +114,7 @@ export default function SignInSide(props) {
                     }}
                 />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                    <Box
+                    <Box style={{marginTop : "40vh"}}
                         sx={{
                             my: 8,
                             mx: 4,

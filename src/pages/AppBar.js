@@ -108,7 +108,7 @@ function ResponsiveAppBar(props) {
                   textDecoration: 'none',
                   minWidth: 100 }}
                 component="a"
-                onClick={() => navigatepage('/')}
+                onClick={() => navigatepage('/scanner')}
                 >Scans
                </Typography>
                <Typography 
@@ -147,7 +147,7 @@ function ResponsiveAppBar(props) {
                 >Pallet
                </Typography>
                <Typography 
-                style={{ display: "flex", justifyContent: 'center', alignItems: 'center' }}
+                style={{ display: "flex", justifyContent: 'center', alignItems: 'center' , cursor :'pointer'}}
                 variant="h6"
                 sx={{
                   mr: 2,
@@ -161,8 +161,12 @@ function ResponsiveAppBar(props) {
                   minWidth: 100 }}
                 
                 component="a"
-                href="#"
-                onClick={handleCloseUserMenu}
+                // href=""
+                // onClick={handleCloseUserMenu}
+                onClick={() => {
+                  localStorage.clear();
+                  navigatepage('/')
+                }}
                 >Logout
                </Typography>
               

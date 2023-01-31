@@ -50,12 +50,13 @@ const PalletPage = () => {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: "admin",pallet_id : pallet , shippers: 'shippers' })
+                body: JSON.stringify({ user: "admin",pallet_id : pallet , shippers: shippers })
             };
             setIsLoading(true);
             //fetch('http://3.15.154.27:8125/add_code', requestOptions)
             //fetch('http://3.18.104.218:8125/add_code', requestOptions)
-            fetch('https://adc.eyeota.ai/api/add_to_pallet', requestOptions)
+            //fetch('https://adc.eyeota.ai/api/add_to_pallet', requestOptions)
+            fetch('https://localhost:8125/api/add_to_pallet', requestOptions)
                 .then(checkStatus)
                 .then(response => {
                     return response.json()
@@ -75,8 +76,8 @@ const PalletPage = () => {
                     setIsSuccess(false);
                     setMsg(`There was an error!, ${error.toString()}`);
                 });
-        
     }
+    
     const getShippers = (isSetOnlyColors) => {
         const requestOptions = {
             method: 'POST',
@@ -84,7 +85,8 @@ const PalletPage = () => {
         };
         //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)
             //fetch('http://3.18.104.218:8125/add_envelope', requestOptions)
-        fetch('https://adc.eyeota.ai/api/get_shippers', requestOptions)
+        //  fetch('https://adc.eyeota.ai/api/get_shippers', requestOptions)
+        fetch('http://localhost:8125/api/get_shippers', requestOptions)
             .then(checkStatus)
             .then(response => response.json())
             .then(data => {
