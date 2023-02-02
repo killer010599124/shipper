@@ -47,16 +47,17 @@ const PalletPage = () => {
         }
     }
     const addPallet = () => {
+            const token = localStorage.getItem("token");
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: "admin",pallet_id : pallet , shippers: shippers })
+                body: JSON.stringify({ user: "admin",pallet_id : pallet , shippers: shippers, token:token })
             };
             setIsLoading(true);
             //fetch('http://3.15.154.27:8125/add_code', requestOptions)
             //fetch('http://3.18.104.218:8125/add_code', requestOptions)
             //fetch('https://adc.eyeota.ai/api/add_to_pallet', requestOptions)
-            fetch('https://localhost:8125/api/add_to_pallet', requestOptions)
+            fetch('http://localhost:8125/api/add_to_pallet', requestOptions)
                 .then(checkStatus)
                 .then(response => {
                     return response.json()
@@ -79,9 +80,14 @@ const PalletPage = () => {
     }
     
     const getShippers = (isSetOnlyColors) => {
+        const token = localStorage.getItem("token");
+        console.log(token);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 
+                'Content-Type': 'application/json'
+                },
+            body: JSON.stringify({token: token})
         };
         //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)
             //fetch('http://3.18.104.218:8125/add_envelope', requestOptions)

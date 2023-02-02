@@ -52,10 +52,11 @@ const ShipperPage = () => {
     }
    
     const getAggShipper = (isSetOnlyColors) => {
+        const token = localStorage.getItem("token");
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body : JSON.stringify({ user: "user", scan_station: '99', code: code })
+            body : JSON.stringify({ user: "user", scan_station: '99', code: code , token:token})
         };
         //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)
             fetch('http://localhost:8125/api/agg_shipper', requestOptions)

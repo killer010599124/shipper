@@ -94,13 +94,14 @@ const ScanerPage = () => {
         e.preventDefault();
         let tempCodes = scannedCodes;
         if (e.key === 'Enter') {
-
+            const token = localStorage.getItem("token");
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: "admin", scan_station: 1, code: scannerCode })
+                body: JSON.stringify({ user: "admin", scan_station: 1, code: scannerCode, token:token })
             };
             setIsLoading(true);
+            
             // fetch('http://3.15.154.27:8125/add_code', requestOptions)
             fetch('http://localhost:8125/api/add_code', requestOptions)
             // fetch('https://adc.eyeota.ai/api/add_code', requestOptions)
@@ -128,10 +129,11 @@ const ScanerPage = () => {
     }
 
     const addEnvelop = (isSetOnlyColors) => {
+        const token = localStorage.getItem("token");
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: 'admin', scan_station: 1, codes: scannedCodes })
+            body: JSON.stringify({ user: 'admin', scan_station: 1, codes: scannedCodes, token: token})
         };
         setIsLoading(true);
         //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)

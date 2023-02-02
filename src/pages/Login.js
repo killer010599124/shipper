@@ -64,6 +64,9 @@ export default function SignInSide(props) {
     const onSuccess = (res) => {
         // console.log('success:', res);
         const jwtToken = res.credential;
+        localStorage.setItem('token', JSON.stringify(jwtToken));
+        navigate("/scanner")
+        
         fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${jwtToken}`).then(checkStatus)
             .then(response => {
                 return response.json()
@@ -71,8 +74,9 @@ export default function SignInSide(props) {
             .then(data => {
 
                 // localStorage.setItem('dataKey', JSON.stringify(data));
-                localStorage.setItem('items', JSON.stringify(data));
-                navigate("/scanner")
+                // console.log(data);
+                
+                
             })
             .catch(error => {
                 console.log('There was an error!', error, error.toString());
