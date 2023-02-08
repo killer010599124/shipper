@@ -16,9 +16,16 @@ import CheckIcon from '@mui/icons-material/Check';
 import { map, isEmpty, concat } from 'lodash';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 
 import BucketButton from '../components/BucketButton';
+import StationListTabel from '../components/stationLIst';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -60,6 +67,11 @@ const ScanerPage = () => {
     const handleOpenModel = () => setOpenModel(true);
     const handleCloseModel = () => setOpenModel(false);
 
+    const [stationModal, setStationModal] = React.useState(false);
+    const handleOpenStationModal = () => setStationModal(true);
+    const handleCloseStationModal = () => setStationModal(false);
+
+
     const [msg, setMsg] = React.useState('');
     const [isSuccess, setIsSuccess] = useState(true);
 
@@ -79,7 +91,8 @@ const ScanerPage = () => {
     };
 
     useEffect(() => {
-        addEnvelop(true);
+       // addEnvelop(true);
+       handleOpenStationModal();
     }, []);
 
 
@@ -402,6 +415,28 @@ const ScanerPage = () => {
                         handleCloseModel();
                     }}>Yes</Button>
                     <Button onClick={handleCloseModel}>No</Button>
+                </Box>
+            </Modal>
+            <Modal 
+                open={stationModal}
+                onClose={handleCloseStationModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                
+            >
+                <Box sx={styleModel} style = {{minWidth : '700px'}}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Scan Station 
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Please select a scan station to scan
+                    </Typography>
+                    <StationListTabel />
+                    <Button onClick={() => {
+                        
+                        handleCloseStationModal();
+                    }}>Yes</Button>
+                    <Button onClick={handleCloseStationModal}>No</Button>
                 </Box>
             </Modal>
         </>
