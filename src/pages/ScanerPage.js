@@ -9,8 +9,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import List from '@mui/material/List';
+import ToggleButton from '@mui/material/ToggleButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import CheckIcon from '@mui/icons-material/Check';
 import { map, isEmpty, concat } from 'lodash';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -28,8 +30,8 @@ const ScanerPage = () => {
     let [isLoading, setIsLoading] = useState(false);
     let [bucketName, setBucketName] = useState('');
     let [envelopes, setEnvelops] = useState([]);
-    
-    
+
+
     let [b3Counts, setB3] = useState({});
     let [bpCounts, setBP] = useState({});
     let [rgCounts, setRG] = useState({});
@@ -48,8 +50,11 @@ const ScanerPage = () => {
     let [laCounts, setLA] = useState({});
     let [lbCounts, setLB] = useState({});
     let [lcCounts, setLC] = useState({});
-
     let [isBucketButtonsEnabled, setIsBucketButtonsEnabled] = useState(false);
+
+    const [rescanSelected, setRescanSelected] = React.useState(false);
+    const [qualitySelected, setQualitySelected] = React.useState(false);
+
     const [open, setOpen] = React.useState(false);
     const [openModel, setOpenModel] = React.useState(false);
     const handleOpenModel = () => setOpenModel(true);
@@ -98,13 +103,13 @@ const ScanerPage = () => {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: "admin", scan_station: 1, code: scannerCode, token:token })
+                body: JSON.stringify({ user: "admin", scan_station: 1, code: scannerCode })
             };
             setIsLoading(true);
-            
+
             // fetch('http://3.15.154.27:8125/add_code', requestOptions)
-            fetch('http://localhost:8125/api/add_code', requestOptions)
-            // fetch('https://adc.eyeota.ai/api/add_code', requestOptions)
+            // fetch('http://localhost:8125/api/add_code', requestOptions)
+            fetch('https://adc.eyeota.ai/api/add_code', requestOptions)
                 .then(checkStatus)
                 .then(response => {
                     return response.json()
@@ -133,12 +138,12 @@ const ScanerPage = () => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: 'admin', scan_station: 1, codes: scannedCodes, token: token})
+            body: JSON.stringify({ user: 'admin', scan_station: 1, codes: scannedCodes, rescan: rescanSelected, quality: qualitySelected })
         };
         setIsLoading(true);
         //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)
-        fetch('http://localhost:8125/api/add_envelope', requestOptions)
-        // fetch('https://adc.eyeota.ai/api/add_envelope', requestOptions)
+        //fetch('http://localhost:8125/api/add_envelope', requestOptions)
+        fetch('https://adc.eyeota.ai/api/add_envelope', requestOptions)
             .then(checkStatus)
             .then(response => response.json())
             .then(data => {
@@ -301,6 +306,17 @@ const ScanerPage = () => {
                             <Divider ></Divider>
 
                         </Grid>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ display: 'flex' }}>
+                                <button onClick={() => setRescanSelected(!rescanSelected)} style={{height : '30px', width:'90px', margin:'auto',borderWidth:'0px',borderRadius : '15px',backgroundColor: `${rescanSelected ? '#ff9901' : 'gray' }`}}></button>
+                                <h2 style={{ paddingLeft: '15px' }}>Rescan</h2>
+                            </div>
+
+                            <div style={{ display: 'flex'}}>
+                                <button onClick={() => setQualitySelected(!qualitySelected)} style={{height : '30px', width:'90px', margin:'auto',borderWidth:'0px', borderRadius : '15px',backgroundColor: `${qualitySelected ? '#ff9901' :'gray' }`}}></button>
+                                <h2 style={{ paddingLeft: '15px' }}>Quality</h2>
+                            </div>
+                        </div>
 
                     </Grid>
                     <Divider orientation="vertical" flexItem  ></Divider>
@@ -327,7 +343,7 @@ const ScanerPage = () => {
                                     <br />
                                 </div>
                                 <Grid item container xs direction="column" style={{ flexDirection: "inherit", marginTop: "50px", height: '30px' }}>
-                                {/* 'B3', 'BP', 'RG', 'RA', 'RB', 'RC', 'RH', 'RF', 'RE', 'RD', 'LH', 'LF', 'LE', 'LD', 'LG', 'LA', 'LB', 'LC' */}
+                                    {/* 'B3', 'BP', 'RG', 'RA', 'RB', 'RC', 'RH', 'RF', 'RE', 'RD', 'LH', 'LF', 'LE', 'LD', 'LG', 'LA', 'LB', 'LC' */}
                                     <BucketButton brCounts={b3Counts} handleOpenModel={handleOpenModel} setCurrentBucket={setCurrentBucket} isBucketButtonsEnabled={isBucketButtonsEnabled} brcolor={'#00008c'} abrcolor={"#0000ff"} />
                                     <BucketButton brCounts={bpCounts} handleOpenModel={handleOpenModel} setCurrentBucket={setCurrentBucket} isBucketButtonsEnabled={isBucketButtonsEnabled} brcolor={'#00008c'} abrcolor={"#0000ff"} />
 

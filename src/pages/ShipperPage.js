@@ -56,11 +56,11 @@ const ShipperPage = () => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body : JSON.stringify({ user: "user", scan_station: '99', code: code , token:token})
+            body : JSON.stringify({ user: "user", scan_station: '99', code: code})
         };
         //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)
-            fetch('http://localhost:8125/api/agg_shipper', requestOptions)
-        //fetch('https://adc.eyeota.ai/api/agg_shipper', requestOptions)
+        //    fetch('http://localhost:8125/api/agg_shipper', requestOptions)
+        fetch('https://adc.eyeota.ai/api/agg_shipper', requestOptions)
             .then(checkStatus)
             .then(response => response.json())
             .then(data => {

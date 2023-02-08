@@ -16,6 +16,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import logo from '../logo-white.png';
+import MenuList from '@mui/material/MenuList';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -28,7 +33,7 @@ function ResponsiveAppBar(props) {
 
   useEffect(() => {
     return () => {
-      
+
     };
   }, []);
   const handleOpenNavMenu = (event) => {
@@ -37,8 +42,8 @@ function ResponsiveAppBar(props) {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const navigatepage = (page) =>{
-      navigate(page);
+  const navigatepage = (page) => {
+    navigate(page);
   }
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -48,6 +53,16 @@ function ResponsiveAppBar(props) {
     props.handleSignout();
     setAnchorElUser(null);
   };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   // <Avatar sx={{ width: 56, height: 56 }} alt="Scanner App" src={logo} />
   return (
     <AppBar position="static">
@@ -94,82 +109,68 @@ function ResponsiveAppBar(props) {
 
           <Box sx={{ flexGrow: 0 }}>
             <Stack direction="row" spacing={2}>
-              <Typography 
-                style={{ display: "flex", justifyContent: 'center', alignItems: 'center', cursor :'pointer'  }}
-                variant="h6"
-                sx={{
-                  mr: 2,
-                  display: { xs: 'flex', md: 'none' },
-                  flexGrow: 1,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  color: 'inherit',
-                  textDecoration: 'none',
-                  minWidth: 100 }}
-                component="a"
-                onClick={() => navigatepage('/scanner')}
-                >Scans
-               </Typography>
-               <Typography 
-                style={{ display: "flex", justifyContent: 'center', alignItems: 'center', cursor :'pointer'  }}
-                variant="h6"
-                sx={{
-                  mr: 2,
-                  display: { xs: 'flex', md: 'none' },
-                  flexGrow: 1,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  color: 'inherit',
-                  textDecoration: 'none',
-                  minWidth: 100 }}
-                component="a"
-                onClick={() => navigatepage('/shippers')}
-                >Shippers
-               </Typography>
-               <Typography 
-                style={{ display: "flex", justifyContent: 'center', alignItems: 'center', cursor :'pointer' }}
-                variant="h6"
-                sx={{
-                  mr: 2,
-                  display: { xs: 'flex', md: 'none' },
-                  flexGrow: 1,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  color: 'inherit',
-                  textDecoration: 'none',
-                  minWidth: 100 }}
-                  component="a"
-                // href="/pallet"
-                  onClick={() => navigatepage('/pallet')}
-                >Pallet
-               </Typography>
-               <Typography 
-                style={{ display: "flex", justifyContent: 'center', alignItems: 'center' , cursor :'pointer'}}
-                variant="h6"
-                sx={{
-                  mr: 2,
-                  display: { xs: 'flex', md: 'none' },
-                  flexGrow: 1,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  color: 'inherit',
-                  textDecoration: 'none',
-                  minWidth: 100 }}
-                
-                component="a"
-                // href=""
-                // onClick={handleCloseUserMenu}
-                onClick={() => {
-                  localStorage.clear();
-                  navigatepage('/')
-                }}
-                >Logout
-               </Typography>
-              
+              <div>
+                <Button
+
+                  id="composition-button"
+                  aria-controls={open ? 'composition-menu' : undefined}
+                  aria-expanded={open ? 'true' : undefined}
+                  aria-haspopup="true"
+                  style={{ color: 'white' }}
+                  onClick={() => {
+                    handleClose();
+                    navigatepage('/scanner');
+                  }}
+                >
+                  Scans
+                </Button>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? 'composition-menu' : undefined}
+                  aria-expanded={open ? 'true' : undefined}
+                  aria-haspopup="true"
+                  style={{ color: 'white' }}
+                  onClick={handleClick}
+                >
+                  Aggregation
+                </Button>
+                <Button
+                  aria-controls={open ? 'composition-menu' : undefined}
+                  aria-expanded={open ? 'true' : undefined}
+                  aria-haspopup="true"
+                  style={{ color: 'white' }}
+                  onClick={() => {
+                    localStorage.clear();
+                    navigatepage('/')
+                  }}
+                >
+                  Logout
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                // style = {{background : '#1976d2'}}
+                >
+                  <MenuItem style={{ color: '#1976d2' }} onClick={() => {
+                      handleClose();
+                      navigatepage('/shippers');
+                    }}>
+                    Aggregate Shippers
+                  </MenuItem>
+                  <MenuItem style={{ color: '#1976d2' }} onClick={() => {
+                      handleClose();
+                      navigatepage('/pallet');
+                    }}>Finalize Pallets
+                  </MenuItem>
+
+                </Menu>
+
+              </div>
               {/* <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt={props.userName} src="/static/images/avatar/2.jpg" />
