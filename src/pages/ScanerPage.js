@@ -37,7 +37,7 @@ const ScanerPage = () => {
     let [isLoading, setIsLoading] = useState(false);
     let [bucketName, setBucketName] = useState('');
     let [envelopes, setEnvelops] = useState([]);
-
+    let [station, setStation] = useState([]);
 
     let [b3Counts, setB3] = useState({});
     let [bpCounts, setBP] = useState({});
@@ -91,10 +91,11 @@ const ScanerPage = () => {
     };
 
     useEffect(() => {
-       // addEnvelop(true);
-       handleOpenStationModal();
+        // addEnvelop(true);
+        handleOpenStationModal();
+        getAvailableStations();
     }, []);
-
+    
 
     const onSubmitScanerCode = (e) => {
         setScannerCode(e.target.value);
@@ -160,14 +161,7 @@ const ScanerPage = () => {
             .then(checkStatus)
             .then(response => response.json())
             .then(data => {
-                // if (isSetOnlyColors) {
-
-                //     setAG(data.green_counts);
-                //     setAR(data.red_counts);
-                //     setBG(data.blue_counts);
-                // } 
-                // else {
-                console.log(data);
+                
                 setBucketName(data.bucket);
 
                 let tempCodes = concat(scannedCodes[0], envelopes);
@@ -199,6 +193,36 @@ const ScanerPage = () => {
 
                 //}
 
+                setIsLoading(false);
+
+            })
+            .catch(error => {
+                setIsLoading(false);
+                setOpen(true);
+                setIsSuccess(false);
+                setMsg(`There was an error!, ${error.toString()}`);
+            });
+    }
+    
+    const getAvailableStations = () => {
+        const token = localStorage.getItem("token");
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+           
+        };
+        setIsLoading(true);
+        //fetch('http://3.15.154.27:8125/add_envelope', requestOptions)
+        //fetch('http://localhost:8125/api/add_envelope', requestOptions)
+        fetch('https://adc.eyeota.ai/api/available_stations', requestOptions)
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(data => {
+                setStation(data);
+                console.log(data);
+                setOpen(true);
+                setIsSuccess(true);
+                setMsg('fetched successfully.');
                 setIsLoading(false);
 
             })
@@ -321,12 +345,12 @@ const ScanerPage = () => {
                         </Grid>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex' }}>
-                                <button onClick={() => setRescanSelected(!rescanSelected)} style={{height : '30px', width:'90px', margin:'auto',borderWidth:'0px',borderRadius : '15px',backgroundColor: `${rescanSelected ? '#ff9901' : 'gray' }`}}></button>
+                                <button onClick={() => setRescanSelected(!rescanSelected)} style={{ height: '30px', width: '90px', margin: 'auto', borderWidth: '0px', borderRadius: '15px', backgroundColor: `${rescanSelected ? '#ff9901' : 'gray'}` }}></button>
                                 <h2 style={{ paddingLeft: '15px' }}>Rescan</h2>
                             </div>
 
-                            <div style={{ display: 'flex'}}>
-                                <button onClick={() => setQualitySelected(!qualitySelected)} style={{height : '30px', width:'90px', margin:'auto',borderWidth:'0px', borderRadius : '15px',backgroundColor: `${qualitySelected ? '#ff9901' :'gray' }`}}></button>
+                            <div style={{ display: 'flex' }}>
+                                <button onClick={() => setQualitySelected(!qualitySelected)} style={{ height: '30px', width: '90px', margin: 'auto', borderWidth: '0px', borderRadius: '15px', backgroundColor: `${qualitySelected ? '#ff9901' : 'gray'}` }}></button>
                                 <h2 style={{ paddingLeft: '15px' }}>Quality</h2>
                             </div>
                         </div>
@@ -417,26 +441,26 @@ const ScanerPage = () => {
                     <Button onClick={handleCloseModel}>No</Button>
                 </Box>
             </Modal>
-            <Modal 
+            <Modal
                 open={stationModal}
                 onClose={handleCloseStationModal}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
-                
+
             >
-                <Box sx={styleModel} style = {{minWidth : '700px'}}>
+                <Box sx={styleModel} style={{ minWidth: '700px' }}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Scan Station 
+                        Scan Station
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         Please select a scan station to scan
                     </Typography>
-                    <StationListTabel />
-                    <Button onClick={() => {
-                        
+                    <StationListTabel station = {station} closeModal = {handleCloseStationModal}/>
+                    {/* <Button onClick={() => {
+
                         handleCloseStationModal();
                     }}>Yes</Button>
-                    <Button onClick={handleCloseStationModal}>No</Button>
+                    <Button onClick={handleCloseStationModal}>No</Button> */}
                 </Box>
             </Modal>
         </>

@@ -7,9 +7,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import Button from '@mui/material/Button';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const StationListTabel = (pros) => {
+
+    const {station,closeModal} = pros;
+    const navigate = useNavigate();
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -22,9 +26,9 @@ const StationListTabel = (pros) => {
     }));
 
     const StyledTableRow = styled(TableRow)(({ theme }) => ({
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
+        // '&:nth-of-type(odd)': {
+            backgroundColor: "#e8f4ff",
+        // },
         // hide last border
         '&:last-child td, &:last-child th': {
             border: 0,
@@ -34,7 +38,7 @@ const StationListTabel = (pros) => {
     function createData(name, calories, fat, carbs, protein) {
         return { name, calories, fat, carbs, protein };
     }
-
+    
     const rows = [
         createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
         createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
@@ -55,15 +59,20 @@ const StationListTabel = (pros) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <StyledTableRow key={row.name}>
-                            <StyledTableCell component="th" scope="row" style = {{borderLeft :"1px solid rgba(0, 0, 0, 1)",borderRight:"1px solid rgba(0, 0, 0, 1)"}}>
-                                {row.name}
+                    {station.map((row) => (
+                        <StyledTableRow key={row.scan_station} style = {{ }}>
+                            <StyledTableCell component="th" scope="row" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)",backgroundColor : `${row.status == 'Active' ? '#e8f4ff' : 'white'}`,
+                                                                        opacity : `${row.status == 'Active' ? '1' : '0.5'}`}}>
+                                {row.scan_station}
                             </StyledTableCell>
-                            <StyledTableCell align="center" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)"}}>{row.calories}</StyledTableCell>
-                            <StyledTableCell align="center" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)"}}>{row.fat}</StyledTableCell>
-                            <StyledTableCell align="center" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)"}}>{row.carbs}</StyledTableCell>
-                            <StyledTableCell align="center" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)"}}>{row.protein}</StyledTableCell>
+                            <StyledTableCell align="center" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)",backgroundColor : `${row.status == 'Active' ? '#e8f4ff' : 'white'}`,
+                                                                        opacity : `${row.status == 'Active' ? '1' : '0.5'}`}}>{row.user}</StyledTableCell>
+                            <StyledTableCell align="center" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)",backgroundColor : `${row.status == 'Active' ? '#e8f4ff' : 'white'}`,
+                                                                        opacity : `${row.status == 'Active' ? '1' : '0.5'}`}}>{row.last_activity}</StyledTableCell>
+                            <StyledTableCell align="center" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)",backgroundColor : `${row.status == 'Active' ? '#e8f4ff' : 'white'}`,
+                                                                        opacity : `${row.status == 'Active' ? '1' : '0.5'}`}}>{row.status}</StyledTableCell>
+                            <StyledTableCell align="center" onClick={() => closeModal() } style = {{borderRight:"1px solid rgba(0, 0, 0, 1)",backgroundColor : `${row.status == 'Active' ? '#e8f4ff' : 'white'}`,
+                                                                        opacity : '1'}}><Button variant="contained" style = {{visibility : `${row.status == 'Active' ? 'hidden' : 'visible'}`}}>Available</Button></StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
