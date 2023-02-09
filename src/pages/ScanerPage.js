@@ -345,13 +345,13 @@ const ScanerPage = () => {
                         </Grid>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex' }}>
-                                <button onClick={() => setRescanSelected(!rescanSelected)} style={{ height: '30px', width: '90px', margin: 'auto', borderWidth: '0px', borderRadius: '15px', backgroundColor: `${rescanSelected ? '#ff9901' : 'gray'}` }}></button>
-                                <h2 style={{ paddingLeft: '15px' }}>Rescan</h2>
+                                <button onClick={() => setRescanSelected(!rescanSelected)} style={{ height: '15px', width: '40px', margin: 'auto', borderWidth: '0px', borderRadius: '15px', backgroundColor: `${rescanSelected ? '#ff9901' : 'gray'}` }}></button>
+                                <h2 style={{ paddingLeft: '15px', lineHeight : '5px' }}>Rescan</h2>
                             </div>
 
                             <div style={{ display: 'flex' }}>
-                                <button onClick={() => setQualitySelected(!qualitySelected)} style={{ height: '30px', width: '90px', margin: 'auto', borderWidth: '0px', borderRadius: '15px', backgroundColor: `${qualitySelected ? '#ff9901' : 'gray'}` }}></button>
-                                <h2 style={{ paddingLeft: '15px' }}>Quality</h2>
+                                <button onClick={() => setQualitySelected(!qualitySelected)} style={{ height: '15px', width: '40px', margin: 'auto', borderWidth: '0px', borderRadius: '15px', backgroundColor: `${qualitySelected ? '#ff9901' : 'gray'}` }}></button>
+                                <h2 style={{ paddingLeft: '11px', lineHeight : '5px'  }}>Quality</h2>
                             </div>
                         </div>
 

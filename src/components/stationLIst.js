@@ -51,7 +51,7 @@ const StationListTabel = (pros) => {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell style= {{width : '10%'}}>Scan Station</StyledTableCell>
+                        <StyledTableCell align="center" style= {{width : '20%'}}>Scan Station</StyledTableCell>
                         <StyledTableCell align="center" style= {{width : '10%'}}>User</StyledTableCell>
                         <StyledTableCell align="center">Last Activity</StyledTableCell>
                         <StyledTableCell align="center">Status</StyledTableCell>
@@ -61,7 +61,7 @@ const StationListTabel = (pros) => {
                 <TableBody>
                     {station.map((row) => (
                         <StyledTableRow key={row.scan_station} style = {{ }}>
-                            <StyledTableCell component="th" scope="row" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)",backgroundColor : `${row.status == 'Active' ? '#e8f4ff' : 'white'}`,
+                            <StyledTableCell align="center" component="th" scope="row" style = {{borderRight:"1px solid rgba(0, 0, 0, 1)",backgroundColor : `${row.status == 'Active' ? '#e8f4ff' : 'white'}`,
                                                                         opacity : `${row.status == 'Active' ? '1' : '0.5'}`}}>
                                 {row.scan_station}
                             </StyledTableCell>
